@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CaseDesk — Order Resolution Center</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand">
+                <span class="brand-mark">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z" fill="currentColor" opacity="0.18"/>
+                        <path d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="m8 12 2.6 2.6L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <div class="brand-text">
+                    <span class="brand-name">CaseDesk</span>
+                    <span class="brand-tag">Order Resolution Center</span>
+                </div>
+            </div>
+            <nav class="top-nav">
+                <span class="nav-item active">Cases</span>
+                <span class="nav-item">Reports</span>
+                <span class="nav-item">Settings</span>
+            </nav>
+            <div class="user-chip">
+                <span class="avatar">SO</span>
+                <span>Support Ops</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="page-intro">
+                <h1>Investigate a customer issue</h1>
+                <p class="subtitle">Look up the order, confirm its status, calculate any compensation due, and notify the account manager &mdash; all from one place.</p>
+            </div>
+
+            <div class="workspace">
+                <section class="card form-card">
+                    <h2 class="card-title">Case details</h2>
+                    <form id="issue-form">
+                        <label for="customer">Customer</label>
+                        <select id="customer" name="customer">
+                            <option value="ACME Corporation">ACME Corporation</option>
+                            <option value="Globex Corporation">Globex Corporation</option>
+                            <option value="Initech">Initech</option>
+                            <option value="Umbrella Corporation">Umbrella Corporation</option>
+                            <option value="Stark Industries">Stark Industries</option>
+                            <option value="Wayne Enterprises">Wayne Enterprises</option>
+                        </select>
+
+                        <label for="issue">Issue</label>
+                        <textarea id="issue" name="issue">Latest shipment has not arrived</textarea>
+
+                        <div class="toggle-group">
+                            <label class="toggle-row" for="calculateCompensation">
+                                <span class="toggle-copy">
+                                    <span class="toggle-title">Calculate compensation</span>
+                                    <span class="toggle-desc">Apply the standard delay-credit policy if eligible</span>
+                                </span>
+                                <span class="switch">
+                                    <input type="checkbox" id="calculateCompensation" checked />
+                                    <span class="slider"></span>
+                                </span>
+                            </label>
+                            <label class="toggle-row" for="notifyAccountManager">
+                                <span class="toggle-copy">
+                                    <span class="toggle-title">Notify account manager</span>
+                                    <span class="toggle-desc">Send a summary email once the case is resolved</span>
+                                </span>
+                                <span class="switch">
+                                    <input type="checkbox" id="notifyAccountManager" checked />
+                                    <span class="slider"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <button type="submit" id="submit-btn">
+                            <span class="btn-spinner" aria-hidden="true"></span>
+                            <span class="btn-label">Investigate &amp; Resolve</span>
+                        </button>
+                    </form>
+                </section>
+
+                <section class="card result-card">
+                    <h2 class="card-title">Resolution</h2>
+
+                    <div id="empty-state" class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.3"/>
+                            <path d="M7 9h10M7 13h10M7 17h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                        </svg>
+                        <p>Run an investigation to see the results here.</p>
+                    </div>
+
+                    <div id="error" class="alert">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.3"/>
+                            <path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                        </svg>
+                        <span id="error-text"></span>
+                    </div>
+
+                    <div id="result" class="result">
+                        <div class="result-hero">
+                            <span class="hero-label">Recommended credit</span>
+                            <span class="hero-value" id="r-credit">&mdash;</span>
+                        </div>
+
+                        <div class="result-row">
+                            <span class="label">Customer</span>
+                            <span class="value" id="r-customer">&mdash;</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Order</span>
+                            <span class="value" id="r-order">&mdash;</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Account manager notified</span>
+                            <span class="value" id="r-notified">&mdash;</span>
+                        </div>
+                        <div class="result-reason">
+                            <span class="label">Reason</span>
+                            <p id="r-reason">&mdash;</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-brand">
+                <span class="brand-mark small">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z" fill="currentColor" opacity="0.18"/>
+                        <path d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span class="footer-brand-name">CaseDesk</span>
+            </div>
+            <div class="footer-meta">
+                <span>Order Resolution Center</span>
+                <span class="dot-sep">&bull;</span>
+                <span>Internal Operations Tool</span>
+            </div>
+            <div class="footer-copy">&copy; 2026 CaseDesk, Inc. All rights reserved.</div>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
