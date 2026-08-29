@@ -1,0 +1,10 @@
+[package]
+org = "anupama"
+name = "cr_agent"
+version = "0.1.0"
+distribution = "2201.13.5"
+title = "CR-Agent"
+
+[build-options]
+sticky = true
+observabilityIncluded = true

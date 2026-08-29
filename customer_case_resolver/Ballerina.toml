@@ -1,0 +1,3 @@
+[workspace]
+title = "customer-case-resolver"
+packages = ["cr_agent"]
