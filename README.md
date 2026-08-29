@@ -16,11 +16,11 @@ The demo has three components that run together:
                                                                  │ getLatestOrder,
                                                                  │ getOrderStatus)
                                                                  ▼
-                                                       ┌───────────────────────┐
+                                                       ┌───────────────────────-┐
                                                        │  customer-mcp-server   │
                                                        │ http://localhost:9092  │
                                                        │ (mock CRM / order data)│
-                                                       └───────────────────────┘
+                                                       └───────────────────────-┘
 ```
 
 The agent also calls a local `calculateCompensation` tool and sends email notifications via the Gmail API (`ballerinax/googleapis.gmail`).
