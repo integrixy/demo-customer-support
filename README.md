@@ -1,6 +1,6 @@
 # Customer Service Demo
 
-A demo of an AI agent that investigates customer order issues, calculates compensation for delays, and notifies the account manager by email — built with [Ballerina](https://ballerina.io) and the Model Context Protocol (MCP).
+A demo of an AI agent that investigates customer order issues, calculates compensation for delays, and notifies the account manager by email — built with WSO2 Agent Builder. 
 
 ![Customer Resolution Agent](image.png)
 
