@@ -1,31 +1,28 @@
 // Types for the mock Customer / Order Management System exposed over MCP.
 
-# Service tiers recognized by the mock CRM.
-public type CustomerTier "GOLD"|"SILVER"|"STANDARD";
+type CustomerTier "GOLD"|"SILVER"|"STANDARD";
+type Status "DELIVERED"|"DELAYED"|"IN_TRANSIT"|"CANCELLED";
 
-# The account manager assigned to a customer.
-public type AccountManager record {|
+type AccountManager record {|
     string name;
     string email;
 |};
 
-# An order, embedded under its owning customer in the seed data.
-public type OrderRecord record {|
+type OrderRecord record {|
     string orderId;
     string customerId;
     string orderDate;
     decimal orderValue;
     string currency;
     string expectedDeliveryDate;
-    "DELIVERED"|"DELAYED"|"IN_TRANSIT"|"CANCELLED" status;
+    Status status;
     int delayDays;
     string currentEstimatedDeliveryDate?;
     string reason?;
     string lastUpdated;
 |};
 
-# A customer record in the mock CRM, including its most recent order.
-public type CustomerRecord record {|
+type CustomerRecord record {|
     string customerId;
     string name;
     CustomerTier tier;
@@ -35,30 +32,30 @@ public type CustomerRecord record {|
 
 // ---- findCustomer result shapes ----
 
-public type CustomerFound record {|
+type CustomerFound record {|
     string customerId;
     string name;
     CustomerTier tier;
     AccountManager accountManager;
 |};
 
-public type CustomerNotFound record {|
+type CustomerNotFound record {|
     boolean found = false;
     string message;
 |};
 
-public type CustomerMatch record {|
+type CustomerMatch record {|
     string customerId;
     string name;
 |};
 
-public type AmbiguousCustomerMatch record {|
+type AmbiguousCustomerMatch record {|
     CustomerMatch[] matches;
 |};
 
 // ---- getLatestOrder result shape ----
 
-public type LatestOrder record {|
+type LatestOrder record {|
     string orderId;
     string customerId;
     string orderDate;
@@ -69,9 +66,9 @@ public type LatestOrder record {|
 
 // ---- getOrderStatus result shape ----
 
-public type OrderStatus record {|
+type OrderStatus record {|
     string orderId;
-    "DELIVERED"|"DELAYED"|"IN_TRANSIT"|"CANCELLED" status;
+    Status status;
     string expectedDeliveryDate;
     string currentEstimatedDeliveryDate?;
     int delayDays;

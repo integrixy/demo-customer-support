@@ -1,0 +1,96 @@
+openapi: 3.0.1
+info:
+  title: Api Customer
+  version: 0.1.0
+paths:
+  /resolve:
+    post:
+      operationId: postResolve
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerIssueRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerIssueResponse"
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+        "500":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+components:
+  schemas:
+    CustomerIssueRequest:
+      required:
+        - calculateCompensation
+        - customer
+        - issue
+        - sendEmail
+      type: object
+      properties:
+        customer:
+          type: string
+        issue:
+          type: string
+        calculateCompensation:
+          type: boolean
+        sendEmail:
+          type: boolean
+      additionalProperties: false
+    CustomerIssueResponse:
+      required:
+        - creditAmount
+        - customer
+        - orderId
+        - reason
+        - sendEmail
+      type: object
+      properties:
+        customer:
+          type: string
+        orderId:
+          type: string
+        creditAmount:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        sendEmail:
+          type: boolean
+      additionalProperties: false
+    ErrorPayload:
+      required:
+        - message
+        - method
+        - path
+        - reason
+        - status
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        method:
+          type: string

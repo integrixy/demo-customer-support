@@ -1,0 +1,9 @@
+[package]
+org = "anupama"
+name = "cr_mcp_service"
+version = "0.1.0"
+distribution = "2201.14.1"
+title = "CR-MCP-Service"
+
+[build-options]
+sticky = true

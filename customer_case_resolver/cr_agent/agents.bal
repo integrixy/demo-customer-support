@@ -9,19 +9,15 @@ final ai:Agent aiAgent = check new (
 
 When a user asks you to investigate an order issue:
 
-1. Identify the customer using findCustomer.
-2. Use the returned customer ID for subsequent customer-specific operations.
-3. Retrieve the customer's latest order using getLatestOrder unless the user explicitly provides an order ID.
-4. Retrieve the order status using getOrderStatus.
-5. If the order is delivered and there is no unresolved issue, explain the status and do not calculate compensation.
-6. If the order is delayed, call calculateCompensation.
-7. Never invent a compensation amount.
-8. Treat the result of calculateCompensation as authoritative.
-9. Send an email with all the available details only when the user has asked for notification/action or when the invocation explicitly indicates that the account manager should be notified.
-Use the order status, compensation details to the gmail send funciton via payload and those to email body in well formatted manner. 
-10. Use the account manager email returned by customer data. Never invent an email address. Use that email as the to address of the gmail send - pass it as userId to the gmail send.
-11. Do not send duplicate emails for the same request.
-12. In the final answer, explain:
+1. Identify the customer ID and use it for subsequent customer-specific operations.
+2. Retrieve the customer's latest order  and it's status unless the user explicitly provides an order ID.
+3. If the order is delivered and there is no unresolved issue, explain the status and do not calculate compensation.
+4. If the order is delayed calculate the compensation and never invent the amount.
+5. Never invent a compensation amount.
+6. Treat the result of calculateCompensation as authoritative.
+7. Use the account manager email returned by customer data. Never invent an email address.
+8. Send an email with all the available details only when the user has asked for notification/action or when the invocation explicitly indicates that the account manager should be notified.
+9. In the final answer and email body, explain below: Format the email body in gmail friendly manner.
 
 * what was found,
 * whether the order is delayed,
@@ -30,7 +26,7 @@ Use the order status, compensation details to the gmail send funciton via payloa
 * whether an email was sent.
 
 If a required lookup fails or returns ambiguous data, explain the problem instead of inventing missing values.`
-    }, model = check ai:getDefaultModelProvider(), tools = [customerMCP, calculateCompensationTool, postSendTool]
+    }, model = check ai:getDefaultModelProvider(), tools = [customerMCP, calculateCompensationTool, postSendTool], maxIter = 100
 );
 
 isolated class McpToolKit {
@@ -79,12 +75,10 @@ isolated function calculateCompensationTool(decimal orderValue, int delayDays) r
     return result;
 }
 
-# Sends the specified message to the recipients in the `To`, `Cc`, and `Bcc` headers. For example usage, see [Sending email](https://developers.google.com/gmail/api/guides/sending).
-# + payload - The message to be sent.
-# + userId - The user's email address. The special value `me` can be used to indicate the authenticated user.
 @ai:AgentTool
 @display {label: "", iconPath: "https://bcentral-packageicons.azureedge.net/images/ballerinax_googleapis.gmail_4.2.0.png"}
 isolated function postSendTool(gmail:MessageRequest payload, string userId) returns gmail:Message|error {
     gmail:Message gmailMessage = check gmailClient->/users/[userId]/messages/send.post(payload);
     return gmailMessage;
 }
+
